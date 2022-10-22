@@ -30,7 +30,6 @@ function App() {
   
             {
               shoes.map((a, i) => {
-                console.log(shoes[i]);
                 return (
   
                   <Sellbox shoes={shoes[i]}></Sellbox>
@@ -41,10 +40,10 @@ function App() {
   
           </Row>
   
-        </Container>
+        </Container> 
         } />
-        <Route path="/detail"element={
-            <DetailBox></DetailBox>
+        <Route path="/detail/:id"element={
+            <DetailBox shoes = {shoes}></DetailBox>
           }/>
       </Routes>
 
