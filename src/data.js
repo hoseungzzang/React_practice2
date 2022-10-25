@@ -1,6 +1,9 @@
 import { useEffect,useState } from "react";
 import { useParams } from "react-router-dom";
 import styled from 'styled-components';
+import Form from 'react-bootstrap/Form';
+import InputGroup from 'react-bootstrap/InputGroup';
+import Alert from 'react-bootstrap/Alert';
 
 //css파일까지 안가도 여기서 생성할 수 있음
 //로딩시간 단축할 수 있음
@@ -35,13 +38,6 @@ let data =[ {
     title : "Grey Yordan",
     content : "Born in the States",
     price : 130000
-  },
-
-  {
-    id : 3,
-    title : "Grey Yordan",
-    content : "Born in the Statestestest",
-    price : 140000
   }];
 
 
@@ -49,6 +45,8 @@ let data =[ {
     
     let [count,setCount] = useState(0);
     let [show,setShow] = useState(true);
+    let [info,setInfo] = useState(false);
+    let [input,setInput] = useState('0');
     const {id} =  useParams();
     let newProps = [...props.shoes];
     newProps = newProps.find(newProps=>newProps.id == id);
@@ -57,7 +55,11 @@ let data =[ {
       setTimeout(()=>{
         setShow(false);
       },2000)
-    },[count])
+    },[])
+    useEffect(()=>{
+      const regex = /^[0-9]+$/;
+      regex.test(input) || input=='' ? setInfo(false) : setInfo(true);
+    },[input])
     return (
         
         <div className="container">
@@ -72,6 +74,24 @@ let data =[ {
           <div className="col-md-6">
             <img src={'https://codingapple1.github.io/shop/shoes'+newProps.id +'.jpg'} width="100%" />
           </div>
+          {
+            info == true
+            ?<Alert key="danger" variant="danger">
+              숫자만 입력할 수 있습니다!!
+            </Alert>
+            :null
+            
+          }
+        <InputGroup className="mb-3"  width="50%">
+        <Form.Control
+          placeholder="Username"
+          aria-label="Username"
+          aria-describedby="basic-addon1"
+          onChange={(e)=>{
+            setInput(e.target.value);
+          }}
+        />
+      </InputGroup>
           <div className="col-md-6">
             <h4 className="pt-5">{newProps.title}</h4>
             <p>{newProps.content}</p>
