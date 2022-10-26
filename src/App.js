@@ -8,8 +8,9 @@ import {Routes, Route, Link} from 'react-router-dom';
 import axios from 'axios';
 
 function App() {
-  let [shoes] = useState(data);
+  let [shoes,setShoes] = useState(data);
   let [ajaxData,setAjaxData] = useState(null);
+  let [btnCount,setBtnCount] = useState(2);
 
   return (
     <div className="App">
@@ -41,25 +42,20 @@ function App() {
 
             }
             </Row>
-            <Row>
-            {
-              
-              ajaxData!=null
-              ?ajaxData.map((a,i)=>{
-                return(
-                  
-                <Sellbox shoes={ajaxData[i]}></Sellbox>
-                )
-              })
-              :null
-            }
-          </Row>
             <button onClick={()=>{
-              axios.get('https://codingapple1.github.io/shop/data2.json')
-              .then((data)=>{setAjaxData(data.data); console.log(ajaxData);})
+              btnCount<4
+              ? axios.get('https://codingapple1.github.io/shop/data'+btnCount+'.json')
+              .then((data)=>{
+                const arrSum = [...shoes,...data.data];
+                setShoes(arrSum);
+              })
               .catch(()=>{
                 alert('실패~');
               })
+              .finally(()=>{
+                setBtnCount(btnCount+1);
+              })
+              : alert('데이터가 없습니다.');
             }}>정보요청
 
             </button>
