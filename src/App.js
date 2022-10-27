@@ -2,20 +2,21 @@
 import { useState } from 'react';
 import logo from './logo.svg';
 import './App.css';
-import { Button, Navbar, Container, Nav, Row, Col  } from 'react-bootstrap';
-import {data,DetailBox} from './data.js';
-import {Routes, Route, Link} from 'react-router-dom';
+import { Button, Navbar, Container, Nav, Row, Col } from 'react-bootstrap';
+import { data, DetailBox } from './routes/data.js';
+import Cart from './routes/Cart.js';
+import { Routes, Route, Link } from 'react-router-dom';
 import axios from 'axios';
 
 function App() {
-  let [shoes,setShoes] = useState(data);
-  let [ajaxData,setAjaxData] = useState(null);
-  let [btnCount,setBtnCount] = useState(2);
+  let [shoes, setShoes] = useState(data);
+  let [ajaxData, setAjaxData] = useState(null);
+  let [btnCount, setBtnCount] = useState(2);
 
   return (
     <div className="App">
 
-      
+
       <Navbar bg="light" variant="white">
         <Container>
           <Navbar.Brand href="#home">Shop</Navbar.Brand>
@@ -29,53 +30,56 @@ function App() {
       <Routes>
         <Route path="/" element={
           <Container>
-          <Row>
-  
-            {
-              shoes.map((a, i) => {
-                return (
-  
-                  <Sellbox shoes={shoes[i]}></Sellbox>
-                )
-  
-              })
+            <Row>
 
-            }
+              {
+                shoes.map((a, i) => {
+                  return (
+
+                    <Sellbox shoes={shoes[i]}></Sellbox>
+                  )
+
+                })
+
+              }
             </Row>
-            <button onClick={()=>{
-              btnCount<4
-              ? axios.get('https://codingapple1.github.io/shop/data'+btnCount+'.json')
-              .then((data)=>{
-                const arrSum = [...shoes,...data.data];
-                setShoes(arrSum);
-              })
-              .catch(()=>{
-                alert('실패~');
-              })
-              .finally(()=>{
-                setBtnCount(btnCount+1);
-              })
-              : alert('데이터가 없습니다.');
+            <button onClick={() => {
+              btnCount < 4
+                ? axios.get('https://codingapple1.github.io/shop/data' + btnCount + '.json')
+                  .then((data) => {
+                    const arrSum = [...shoes, ...data.data];
+                    setShoes(arrSum);
+                  })
+                  .catch(() => {
+                    alert('실패~');
+                  })
+                  .finally(() => {
+                    setBtnCount(btnCount + 1);
+                  })
+                : alert('데이터가 없습니다.');
             }}>정보요청
 
             </button>
-        </Container> 
+          </Container>
         } />
-        <Route path="/detail/:id"element={
-            <DetailBox shoes = {shoes}></DetailBox>
-          }/>
+        <Route path="/detail/:id" element={
+          <DetailBox shoes={shoes}></DetailBox>
+        } />
+         <Route path="/Cart" element={
+          <Cart></Cart>
+        } />
       </Routes>
 
-      
+
     </div>
   );
 }
 
 
 function Sellbox(props) {
-  const imgSrc = "https://codingapple1.github.io/shop/shoes" + (props.shoes.id +1) + ".jpg";
+  const imgSrc = "https://codingapple1.github.io/shop/shoes" + (props.shoes.id + 1) + ".jpg";
   return (
-   
+
     <Col >
       <img src={imgSrc} className="sell"></img>
       <h4>{props.shoes.title}</h4>

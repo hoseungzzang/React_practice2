@@ -5,7 +5,7 @@ import Form from 'react-bootstrap/Form';
 import InputGroup from 'react-bootstrap/InputGroup';
 import Alert from 'react-bootstrap/Alert';
 import Nav from 'react-bootstrap/Nav';
-import './App.css';
+import '../App.css';
 //css파일까지 안가도 여기서 생성할 수 있음
 //로딩시간 단축할 수 있음
 //props 뚫어서 동적으로 원하는 스타일 할당할 수있음
@@ -40,7 +40,6 @@ let data = [{
   content: "Born in the States",
   price: 130000
 }];
-
 
 function DetailBox(props) {
 
@@ -117,14 +116,15 @@ function DetailBox(props) {
           <Nav.Link onClick={()=>{setTap('seller')}} eventKey="link2">버튼2</Nav.Link>
         </Nav.Item>
       </Nav>
-      <TapContent tap = {tap}></TapContent>
+      <TapContent tap = {tap} shoes = {props.shoes}></TapContent>
     </div>
 
   )
 }
 
-function TapContent({tap}){
+function TapContent(props){
   let [fade, setFade] = useState('');
+  console.log();
   useEffect(()=>{
     setTimeout(()=>{
       setFade('end');
@@ -133,16 +133,16 @@ function TapContent({tap}){
     return()=>{
       setFade('')
     }
-  },tap)
-  if(tap == 'search'){
+  },props.tap)
+  if(props.tap == 'search'){
     return(
-     <div className={'start '+fade}>내용1</div>
+     <div className={'start '+fade}>{props.shoes[0].title}</div>
     )
-  }else if(tap == 'detail'){
+  }else if(props.tap == 'detail'){
     return(
       <div className={'start '+fade}>내용2</div>
     )
-  }else if(tap == 'seller'){
+  }else if(props.tap == 'seller'){
     return(
       <div className={'start '+fade}>내용3</div>
     )
