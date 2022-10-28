@@ -1,20 +1,34 @@
 import { configureStore, createSlice } from '@reduxjs/toolkit'
+import user from './store/userSlice.js'
 
-//useState와 같은 용도
-let user = createSlice({
-    name : 'user',
-    initialState : 'kim'
-})
 
 let cartData = createSlice({
 
         name : 'cartData',
-        initialState : [{id : 0, name : 'White and Black', count : 2},{id : 2, name : 'Grey Yordan', count : 1}]
+        initialState : [
+          {id : 0, name : 'White and Black', count : 2}
+          ,{id : 2, name : 'Grey Yordan', count : 1}
+        ],
+        reducers : {
+          plusCnt(state ,action){
+            let i = state.find(state=> state.id == action.payload)
+            i.count++;
+          },
+          plusThing(state,action){
+            console.log(action.payload)
+            let arr = {
+              id : action.payload.id,
+              name : action.payload.title,
+              count : 1  
+            };
+            state.push(arr);
+          }
+        }
         
     
       
     })
-
+  export let {plusCnt,plusThing} = cartData.actions
 
 export default configureStore({
   reducer: { 

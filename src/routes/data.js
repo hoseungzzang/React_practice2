@@ -1,11 +1,13 @@
 import { useEffect, useState } from "react";
-import { useParams } from "react-router-dom";
+import { useParams ,Link} from "react-router-dom";
 import styled from 'styled-components';
 import Form from 'react-bootstrap/Form';
 import InputGroup from 'react-bootstrap/InputGroup';
 import Alert from 'react-bootstrap/Alert';
 import Nav from 'react-bootstrap/Nav';
 import '../App.css';
+import { useDispatch } from 'react-redux'
+import {plusThing} from './../store.js';
 //css파일까지 안가도 여기서 생성할 수 있음
 //로딩시간 단축할 수 있음
 //props 뚫어서 동적으로 원하는 스타일 할당할 수있음
@@ -42,7 +44,8 @@ let data = [{
 }];
 
 function DetailBox(props) {
-
+  
+  let dispatch = useDispatch();
   let [count, setCount] = useState(0);
   let [show, setShow] = useState(true);
   let [info, setInfo] = useState(false);
@@ -54,8 +57,18 @@ function DetailBox(props) {
   let [showing, setShowing] = useState('');
   //hook mount, update 시 코드 실행
   useEffect(() => {
+    let obj = JSON.parse(localStorage.getItem('item'));
+    if(obj==null){
+      localStorage.setItem('item', JSON.stringify([newProps]));
+    }else{
+      let item = [...JSON.parse(localStorage.getItem('item'))];
+      console.log(item);
+      item.push(newProps);
+      localStorage.setItem('item', JSON.stringify(item));
+    }
+   
     setTimeout(() => {
-      console.log(showing);
+      
       setShowing('end');
     }, 100)
     setTimeout(() => {
@@ -102,7 +115,9 @@ function DetailBox(props) {
           <h4 className="pt-5">{newProps.title}</h4>
           <p>{newProps.content}</p>
           <p>{newProps.price}</p>
-          <button className="btn btn-danger">주문하기</button>
+          <button className="btn btn-danger" onClick={()=>{
+            dispatch(plusThing(newProps))
+          }}><Link to ='/cart'>주문하기</Link></button>
         </div>
       </div>
       <Nav variant="tabs" defaultActiveKey="link0">

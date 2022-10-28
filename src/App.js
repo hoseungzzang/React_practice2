@@ -1,8 +1,7 @@
 /* eslint-disable */
 import { useState } from 'react';
-import logo from './logo.svg';
 import './App.css';
-import { Button, Navbar, Container, Nav, Row, Col } from 'react-bootstrap';
+import { Button, Navbar, Container, Nav, Row, Col, Card } from 'react-bootstrap';
 import { data, DetailBox } from './routes/data.js';
 import Cart from './routes/Cart.js';
 import { Routes, Route, Link } from 'react-router-dom';
@@ -12,7 +11,8 @@ function App() {
   let [shoes, setShoes] = useState(data);
   let [ajaxData, setAjaxData] = useState(null);
   let [btnCount, setBtnCount] = useState(2);
-
+  let obj = JSON.parse(localStorage.getItem('item'));
+  //obj 작업 해야함. 
   return (
     <div className="App">
 
@@ -27,9 +27,27 @@ function App() {
         </Container>
       </Navbar>
       <div className="main-bg"></div>
+      <div className="row main-sell">
+      <Card border="primary" style={{ width: '10%' }}>
+              <Card.Header><h6>최근 본 상품</h6></Card.Header>
+              <Card.Body>
+                {
+                  obj != null
+                  ? obj.map((a,i)=>{
+                    return (
+                      obj[i].title
+                    )
+                    
+                   })
+                  : null
+                
+                }
+              
+              </Card.Body>
+         </Card>
       <Routes>
         <Route path="/" element={
-          <Container>
+          <Container style={{width :'90%'}}>
             <Row>
 
               {
@@ -43,6 +61,7 @@ function App() {
 
               }
             </Row>
+            
             <button onClick={() => {
               btnCount < 4
                 ? axios.get('https://codingapple1.github.io/shop/data' + btnCount + '.json')
@@ -60,16 +79,19 @@ function App() {
             }}>정보요청
 
             </button>
+         
           </Container>
+          
         } />
+      
         <Route path="/detail/:id" element={
           <DetailBox shoes={shoes}></DetailBox>
         } />
-         <Route path="/Cart" element={
+        <Route path="/Cart" element={
           <Cart></Cart>
         } />
       </Routes>
-
+      </div>
 
     </div>
   );
