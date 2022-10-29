@@ -14,5 +14,19 @@ let user = createSlice({
       }
     }
 })
+
+let search = createSlice({
+  name : 'search',
+  initialState : 'kim',
+  reducers : {
+    userUpdate(state){
+      console.log(state)
+      return 'john Kim'
+    },
+    func(){
+
+    }
+  }
+})
 export let {userUpdate} = user.actions
 export default user
