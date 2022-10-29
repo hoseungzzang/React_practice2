@@ -6,13 +6,15 @@ import { data, DetailBox } from './routes/data.js';
 import Cart from './routes/Cart.js';
 import { Routes, Route, Link } from 'react-router-dom';
 import axios from 'axios';
-
+import { useDispatch,useSelector} from 'react-redux'
+import {getItem} from './store.js';
 function App() {
   let [shoes, setShoes] = useState(data);
   let [ajaxData, setAjaxData] = useState(null);
   let [btnCount, setBtnCount] = useState(2);
-  let obj = JSON.parse(localStorage.getItem('item'));
-  //obj 작업 해야함. 
+  let dispatch = useDispatch();
+  let state = useSelector((state)=> state.search);
+  
   return (
     <div className="App">
 
@@ -32,17 +34,18 @@ function App() {
               <Card.Header><h6>최근 본 상품</h6></Card.Header>
               <Card.Body>
                 {
-                  obj != null
-                  ? obj.map((a,i)=>{
-                    return (
-                      obj[i].title
+                  state!=null
+                  ?state.map((a,i)=>{
+                    return(
+                      <div>{state[i].title}</div>
+                      
                     )
-                    
-                   })
-                  : null
+                  })
+                  : ''
+                  
                 
                 }
-              
+                
               </Card.Body>
          </Card>
       <Routes>

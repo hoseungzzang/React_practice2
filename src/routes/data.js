@@ -7,7 +7,7 @@ import Alert from 'react-bootstrap/Alert';
 import Nav from 'react-bootstrap/Nav';
 import '../App.css';
 import { useDispatch } from 'react-redux'
-import {plusThing} from './../store.js';
+import {plusThing,setItem} from './../store.js';
 //css파일까지 안가도 여기서 생성할 수 있음
 //로딩시간 단축할 수 있음
 //props 뚫어서 동적으로 원하는 스타일 할당할 수있음
@@ -59,22 +59,22 @@ function DetailBox(props) {
   useEffect(() => {
     let obj = JSON.parse(localStorage.getItem('item'));
     if(obj==null){
-      localStorage.setItem('item', JSON.stringify([newProps]));
+      localStorage.setItem('item', JSON.stringify(newProps));
+      dispatch(setItem(newProps));
     }else{
-      let item = [...JSON.parse(localStorage.getItem('item'))];
-      console.log(item);
+      let item = [JSON.parse(localStorage.getItem('item'))];
       item.push(newProps);
-      localStorage.setItem('item', JSON.stringify(item));
+      localStorage.setItem('item', JSON.stringify(...item));
+      dispatch(setItem(newProps));
     }
    
     setTimeout(() => {
-      
       setShowing('end');
     }, 100)
     setTimeout(() => {
       setShow(false);
     }, 2000)
-  }, [])
+  },[])
   useEffect(() => {
     const regex = /^[0-9]+$/;
     regex.test(input) || input == '' ? setInfo(false) : setInfo(true);
@@ -139,7 +139,6 @@ function DetailBox(props) {
 
 function TapContent(props){
   let [fade, setFade] = useState('');
-  console.log();
   useEffect(()=>{
     setTimeout(()=>{
       setFade('end');
@@ -148,7 +147,7 @@ function TapContent(props){
     return()=>{
       setFade('')
     }
-  },props.tap)
+  },[props.tap])
   if(props.tap == 'search'){
     return(
      <div className={'start '+fade}>{props.shoes[0].title}</div>

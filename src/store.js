@@ -28,12 +28,29 @@ let cartData = createSlice({
     
       
     })
+
+
   export let {plusCnt,plusThing} = cartData.actions
 
+
+  
+let search = createSlice({
+  name : 'search',
+  initialState : JSON.parse(localStorage.getItem('item')) == null?[]:[JSON.parse(localStorage.getItem('item'))],
+  reducers : {
+    setItem(state,action){
+      console.log(action.payload);
+      state.push(action.payload);
+      console.log(state);
+    }
+  }
+})
+export let {setItem} = search.actions
 export default configureStore({
   reducer: { 
     //reducer 붙여줘야함.
     user : user.reducer,
-    cartData : cartData.reducer
+    cartData : cartData.reducer,
+    search : search.reducer
   }
 }) 
