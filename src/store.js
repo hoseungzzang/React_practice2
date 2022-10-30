@@ -36,12 +36,11 @@ let cartData = createSlice({
   
 let search = createSlice({
   name : 'search',
-  initialState : JSON.parse(localStorage.getItem('item')) == null?[]:[JSON.parse(localStorage.getItem('item'))],
+  initialState : JSON.parse(localStorage.getItem('item')) == null?[]:JSON.parse(localStorage.getItem('item')),
   reducers : {
     setItem(state,action){
-      console.log(action.payload);
-      state.push(action.payload);
-      console.log(state);
+      let fin = state.find(state=>state.id == action.payload.id);
+      if(fin==undefined) state.push(action.payload);
     }
   }
 })

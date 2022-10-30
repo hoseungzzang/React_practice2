@@ -59,12 +59,12 @@ function DetailBox(props) {
   useEffect(() => {
     let obj = JSON.parse(localStorage.getItem('item'));
     if(obj==null){
-      localStorage.setItem('item', JSON.stringify(newProps));
+      localStorage.setItem('item', JSON.stringify([newProps]));
       dispatch(setItem(newProps));
     }else{
-      let item = [JSON.parse(localStorage.getItem('item'))];
-      item.push(newProps);
-      localStorage.setItem('item', JSON.stringify(...item));
+      let fin = obj.find(obj=>obj.id == newProps.id);
+      if(fin==undefined) obj.push(newProps);
+      localStorage.setItem('item', JSON.stringify(obj));
       dispatch(setItem(newProps));
     }
    
