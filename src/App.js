@@ -8,6 +8,7 @@ import { Routes, Route, Link } from 'react-router-dom';
 import axios from 'axios';
 import { useDispatch,useSelector} from 'react-redux'
 import {getItem} from './store.js';
+import { useQuery } from 'react-query';
 function App() {
   let [shoes, setShoes] = useState(data);
   let [ajaxData, setAjaxData] = useState(null);
@@ -15,6 +16,14 @@ function App() {
   let dispatch = useDispatch();
   let state = useSelector((state)=> state.search);
   
+  let result = useQuery('ajaxData', ()=>
+    axios.get('https://codingapple1.github.io/userdata.json')
+    .then((a)=>{ return a.data }),
+    {
+      staleTime : 2000
+    }
+  )
+
   return (
     <div className="App">
 
@@ -26,6 +35,7 @@ function App() {
             <Nav.Link href="#home">Home</Nav.Link>
             <Nav.Link href="#features">Something</Nav.Link>
           </Nav>
+          <Nav className="ms-auto">{result.isLoading ? '로딩중' : result.data.name}</Nav>
         </Container>
       </Navbar>
       <div className="main-bg"></div>
@@ -51,7 +61,7 @@ function App() {
       <Routes>
         <Route path="/" element={
           <Container style={{width :'90%'}}>
-            <Row>
+            <Row >
 
               {
                 shoes.map((a, i) => {
@@ -106,7 +116,7 @@ function Sellbox(props) {
   return (
 
     <Col >
-      <img src={imgSrc} className="sell"></img>
+      <Link to={'/detail/'+(props.shoes.id+1)}><img src={imgSrc} className="sell"></img></Link>
       <h4>{props.shoes.title}</h4>
       <p>{props.shoes.price}</p>
       <p>{props.shoes.content}</p>
