@@ -1,14 +1,15 @@
 /* eslint-disable */
-import { useState } from 'react';
+import { useState, lazy,Suspense} from 'react';
 import './App.css';
 import { Button, Navbar, Container, Nav, Row, Col, Card } from 'react-bootstrap';
 import { data, DetailBox } from './routes/data.js';
-import Cart from './routes/Cart.js';
+//import Cart from './routes/Cart.js';
 import { Routes, Route, Link } from 'react-router-dom';
 import axios from 'axios';
 import { useDispatch,useSelector} from 'react-redux'
 import {getItem} from './store.js';
 import { useQuery } from 'react-query';
+const Cart = lazy(()=> import('./routes/Cart.js'));
 function App() {
   let [shoes, setShoes] = useState(data);
   let [ajaxData, setAjaxData] = useState(null);
@@ -58,6 +59,7 @@ function App() {
                 
               </Card.Body>
          </Card>
+         <Suspense fallback={<div>로딩중</div>}>
       <Routes>
         <Route path="/" element={
           <Container style={{width :'90%'}}>
@@ -101,9 +103,13 @@ function App() {
           <DetailBox shoes={shoes}></DetailBox>
         } />
         <Route path="/Cart" element={
+          
           <Cart></Cart>
+      
+          
         } />
       </Routes>
+      </Suspense>
       </div>
 
     </div>
